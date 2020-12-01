@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+		html{
+			width: 100%;
+			height: 100%;
+		}
+			body{
+				width: 1366px;
+				height: auto;
+				margin: 0;
+				padding: 62px 0 ;
+				background: url(img/main.png) no-repeat;
+				background-size:100% ;
+				font-family: "微软雅黑";
+				overflow: hidden;
+				background-color: #0c094e;
+			}
+			p{
+				margin: 0;
+			}
+			a{
+				outline: none;
+				text-decoration: none;
+				color: #fff;
+			}
+			.Mtitle{
+				font-size: 55px;
+				font-weight: 900;
+				color: #fff;
+				text-align: center;
+			}
+			.Mtitle p{
+				margin: 0 0 62px;
+			}
+			li{list-style: none; 
+			    width: 238px; 
+			    height: 94px;
+			    float: left;
+			    margin:0 42px 62px 42px;
+			    background: #303298;
+				border-radius: 5px;
+				text-align: center;
+				padding-top: 12px;
+				cursor: pointer;
+			    }
+			li .t1{
+				font-size: 36px;	
+			}
+			li .t2{
+				font-size: 18px;
+				line-height: 28px;
+			}
+			ul{ width: 971px; 
+			    margin: 0 auto 50px; 
+			    height: 337px;}
+			.log{
+				width: 132px;
+				margin: 0 auto;
+			}
+			.log img{
+				width: 132px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="Mtitle"><p>现场抽奖</p></div>
+		<div class="main">
+			<ul id="list1">
+				<li class="tp1"><a href="html/start.html?1"><p class="t1">乐视手机</p><p class="t2">乐2</p></a></li>
+				<li class="tp2"><a href="html/start.html?2"><p class="t1">豪韵音响</p><p class="t2">ASW-850</p></a></li>
+				<li class="tp3"><a href="html/start.html?3"><p class="t1">乐视电视</p><p class="t2">s40</p></a></li>
+				<li class="tp4"><a href="html/start.html?4"><p class="t1">乐视电视</p><p class="t2">x43</p></a></li>
+				<li class="tp5"><a href="html/start.html?5"><p class="t1">豪韵音响</p><p class="t2">AV-250</p></a></li>
+				<li class="tp6"><a href="html/start.html?6"><p class="t1">iphone7</p><p class="t2">128G 磨砂黑</p></a></li>
+			</ul>
+			<p class="log"><a href="html/lucky.html"><img src="img/log.png"/></a></p>
+		</div>
+	</body>
+	<script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$.ajax({
+			type:"post",
+			url:"/lucky/ajax/getStatusData.php",
+			async:true,
+			success:function(data){
+				
+				var sta = JSON.parse(data).result;
+				var len = 7;
+				for(var i = 1;i < len;i++){
+					var te = $(".tp"+i).find(".t2").text();
+					if(sta[i+''] > 0){
+						$(".tp"+i).css("background","#e44c28");
+						$(".tp"+i).find(".t2").text(te+"(已结束)");
+						$(".tp"+i).find("a").attr("href","html/end.html?"+i)
+					}
+					
+				}
+				console.log($(".tp"+i))
+				console.log(len)
+			}
+		});
+	</script>
+</html>
