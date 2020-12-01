@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+		html{
+			width: 100%;
+			height: 100%;
+		}
+			body{
+				width: 1366px;
+				height: auto;
+				margin: 0;
+				padding: 62px 0 ;
+				background: url(../img/start1.png) no-repeat;
+				background-size:100% ;
+				font-family: "微软雅黑";
+				overflow: hidden;
+				background-color: #07044a;
+			}
+			p{
+				margin: 0;
+			}
+			.Mtitle{
+				font-size: 55px;
+				font-weight: 900;
+				color: #fff;
+				text-align: center;
+				margin-bottom: 80px;
+			}
+			.Mtitle p{
+				margin: 0 0 20px;
+			}
+			.Mtitle .num{
+				height: 50px;
+				font-size: 26px;
+			}
+			li{list-style: none; 
+			    width: 238px; 
+			    height: 106px;
+			    float: left;
+			    margin:0 42px 62px 42px;
+			    }
+			li img{
+				width: 238px; 
+			    height: 106px;
+				
+			}
+			ul{ width: 971px; 
+			    margin: 0 auto; 
+			    height: 337px;}
+			.main{
+				width: 662px;
+				height: 182px;
+				background-image: url(../img/start_03.png);
+				background-color: #303298;
+				border-radius: 10px;
+				margin: 0 auto 75px;
+				text-align: center;
+				color: #fff;
+				cursor: hand;
+			}
+			.main div{
+				width: 100%;
+				height: 100%;
+				padding-top:30px;
+				box-sizing: border-box;
+				
+				
+			}
+			.main .name{
+				font-size: 58px;
+			}
+			.main .nameP{
+				font-size: 28px;
+				line-height: 60px;
+			}
+			.start{
+				font-size: 58px;
+				line-height: 182px;
+				cursor: pointer;
+			}
+			.stop{
+				width: 400px;
+				height: 65px;
+				margin: 0 auto;
+				color: #FFFFFF;
+				background: #e74d28;
+				border-radius: 5px;
+				font-size: 36px;
+				text-align: center;
+				line-height: 65px;
+				display: none;
+				cursor: pointer;
+			}
+			.back{
+				position: absolute;
+				bottom: 55px;
+				right: 50px;
+				
+			}
+			.back img{
+				width: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="Mtitle"><p>跪谢老板！么么哒</p><div class="num"></div></div>
+		<div class="main">
+			<!--<div><p class="name">获奖名</p><p class="nameP">商业产品事业部</p></div>-->
+			<p class="start">开始抽奖</p>
+			
+		</div>
+		<p class="back"><a href="../index.html"><img src="../img/lALOnYr5LC0t_45_45.png"/></a></p>
+		<div class="stop"  index="0">停止</div>
+	</body>
+	<script src="../js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		function start(){
+			$.ajax({
+				type:"post",
+				url:"/lucky/ajax/getOneRandomData.php",
+				async:false,
+				success:function(data){
+					localStorage.setItem("Lname",data)
+				}
+			});
+		}
+		function all(){
+			$.ajax({
+				type:"post",
+				url:"/lucky/ajax/getAll.php",
+				async:false,
+				success:function(data){
+					localStorage.setItem("name",data)
+				}
+			});
+		}
+		var lucky;	
+	
+		$(".start").click(function(){
+			$(".stop").css("display","block");
+			
+			all();
+			tA();					
+	
+		});
+		function tA(){
+			start();
+			var list = localStorage.getItem("name");
+			var data = JSON.parse(list).result;
+			
+			var len = data.length;
+			
+			var num = 0;
+			
+			
+			function showName(){			
+				var html = "<div><p class='name'>"+data[num].user_name+"</p><p class='nameP'>"+data[num].dept_name+"</p></div>";
+				$(".main").html(html);
+				$('.main').css('background',"url(../img/start_03.png)");
+				num++;
+				if(num >= len-1){ num = 0}
+			}
+				 lucky = setInterval(showName,100);	
+		}
+		$(".stop").click(function(){				
+			var _this = $(this).attr("index");
+			if(_this == 0){
+				t1();
+				$(this).attr("index","1");
+				$(this).text("老板在给次机会吧！")
+			}else if(_this == 1){
+				
+				$(this).attr("index","0");
+				window.location.href="http://localhost/lucky/html/lucky.html"
+				
+			}			
+		})
+		function t1(){
+				var Ldata = JSON.parse(localStorage.getItem("Lname")).result;
+				var len2 = Ldata.length;
+				$('.main').css('background',"url(../img/start1_03.png)");
+				clearInterval(lucky)
+				var html = "<div><p class='name'>"+Ldata[0].user_name+"</p><p class='nameP'>"+Ldata[0].dept_name+"</p></div>";
+				$(".main").html(html);							
+				
+			}
+	</script>
+</html>
