@@ -22,7 +22,6 @@ if(!empty($_POST)){
     </form>
 
 </div>
-
 </body>
 <script>
     function init() {
